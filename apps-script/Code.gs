@@ -159,17 +159,20 @@ function verify_(token) {
 
 /* ---------- Oʻqituvchi uchun .xls ---------- */
 function xls_() {
-  const data = sheet_("Natijalar", RES_HEAD).getDataRange().getValues();
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const cell = (v, h) => `<Cell${h ? ' ss:StyleID="h"' : ""}><Data ss:Type="${typeof v === "number" ? "Number" : "String"}">${esc(v)}</Data></Cell>`;
-  const rows = data.map((r, i) => "<Row>" + r.slice(0, 14).map(v => cell(v, i === 0)).join("") + "</Row>").join("\n");
+  const val = v => v instanceof Date ? Utilities.formatDate(v, TZ, "dd.MM.yyyy HH:mm:ss") : v;
+  const cell = (v, h) => `<Cell${h ? ' ss:StyleID="h"' : ""}><Data ss:Type="${typeof v === "number" ? "Number" : "String"}">${esc(val(v))}</Data></Cell>`;
+  const ws = (name, data) => `<Worksheet ss:Name="${name}"><Table>\n` +
+    data.map((r, i) => "<Row>" + r.map(v => cell(v, i === 0)).join("") + "</Row>").join("\n") + "\n</Table></Worksheet>";
+  const res = sheet_("Natijalar", RES_HEAD).getDataRange().getValues().map(r => r.slice(0, 14));   // ID ustunisiz
+  const att = sheet_("Urinishlar", ATT_HEAD).getDataRange().getValues().map(r => r.slice(1));       // Kalit ustunisiz
   return `<?xml version="1.0" encoding="UTF-8"?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">
 <Styles><Style ss:ID="h"><Font ss:Bold="1"/><Interior ss:Color="#C8ECCB" ss:Pattern="Solid"/></Style></Styles>
-<Worksheet ss:Name="Natijalar"><Table>
-${rows}
-</Table></Worksheet></Workbook>`;
+${ws("Natijalar", res)}
+${ws("Urinishlar", att)}
+</Workbook>`;
 }
 
 /* ---------- Yordamchilar ---------- */
