@@ -1,0 +1,24 @@
+Savollar.gs
+*Savollar*.gs
+Sozlamalar.gs
+!apps-script/Sozlamalar.example.gs
+private/
+.clasp.json
+.clasprc.json
+
+# Oʻquvchilarning shaxsiy maʼlumotlari bor natija fayllari
+*.xls
+*.xlsx
+*.csv
+natijalar*
+
+# Build natijasi (GitHub Actions oʻzi yaratadi)
+dist/
+
+# Muharrir va tizim fayllari
+.vscode/
+.idea/
+.claude/
+Thumbs.db
+desktop.ini
+.DS_Store

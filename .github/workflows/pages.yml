@@ -1,0 +1,44 @@
+name: Build va GitHub Pages ga joylash
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build (Apps Script manzilini qoʻyish)
+        env:
+          SCRIPT_URL: ${{ vars.SCRIPT_URL }}
+        run: |
+          if [[ ! "$SCRIPT_URL" =~ ^https://script\.google\.com/ ]]; then
+            echo "::error::Settings → Secrets and variables → Actions → Variables boʻlimida SCRIPT_URL kiritilmagan"
+            exit 1
+          fi
+          mkdir -p dist
+          sed "s|__SCRIPT_URL__|${SCRIPT_URL}|g" index.html > dist/index.html
+          grep -q "__SCRIPT_URL__" dist/index.html && { echo "::error::Almashtirish bajarilmadi"; exit 1; } || true
+          touch dist/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Informatika testi</title>
+<style>
+:root{--bg:#dcf5dc;--bg2:#c8eccb;--card:#fff;--green:#2e9b47;--green-d:#1d7432;--blue:#0b4fb3;--line:#b9e2be;--red:#c62828}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:system-ui,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),var(--bg2));color:#000;-webkit-user-select:none;user-select:none}
+input{-webkit-user-select:text;user-select:text}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+.card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 2px 12px rgba(25,90,40,.12);border:1px solid var(--line)}
+h1{font-size:22px;margin:0 0 6px;color:var(--green-d)}
+.sub{color:#35553b;font-size:14px;margin:0 0 16px}
+.field{display:block;margin:0 0 14px}
+.field span{display:block;font-weight:600;margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px;font-size:16px;border:1.5px solid var(--line);border-radius:10px;background:#f6fff6}
+.field input:focus,.field select:focus{outline:none;border-color:var(--green)}
+.btn{border:0;border-radius:10px;padding:12px 18px;font-size:16px;font-weight:600;cursor:pointer;background:var(--green);color:#fff}
+.btn:hover{background:var(--green-d)}
+.btn:disabled{background:#9fc9a8;cursor:not-allowed}
+.btn.ghost{background:#eaf7ec;color:var(--green-d);border:1.5px solid var(--line)}
+.btn.warn{background:#d9822b}
+.rules{background:#f1fbf2;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;font-size:14px;margin:16px 0}
+.rules li{margin:4px 0}
+.msg{color:var(--red);font-weight:600;min-height:22px;margin-top:10px}
+.hidden{display:none!important}
+.top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.who{font-size:14px;color:#2b4a31}
+.timer{font-size:22px;font-weight:700;color:var(--green-d);background:#fff;border:2px solid var(--green);border-radius:10px;padding:4px 12px;min-width:84px;text-align:center}
+.timer.low{color:var(--red);border-color:var(--red)}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;background:#e3f4e5;color:var(--green-d)}
+.badge.m{background:#fff3d6;color:#8a5a00}.badge.h{background:#fde1e1;color:#9b1c1c}
+.qtext{color:#000;font-size:19px;font-weight:600;line-height:1.45;margin:6px 0 12px}
+.hint{color:#3c5b42;font-size:13px;margin-bottom:10px}
+.media{margin:8px 0 14px;text-align:center}
+.media svg{max-width:100%;height:auto;border:1px solid #e3e9e4;border-radius:8px;background:#fff}
+.audio{display:inline-flex;align-items:center;gap:8px;background:#e8f1ff;color:var(--blue);border:1.5px solid #b8cff5;border-radius:10px;padding:10px 16px;font-weight:700;font-size:16px;cursor:pointer}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1.5px solid #d4e3f7;border-radius:10px;cursor:pointer;color:var(--blue);font-size:17px;background:#fbfdff}
+.opt input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:var(--blue)}
+.opt.sel{border-color:var(--blue);background:#eaf2ff}
+.open input{width:100%;padding:12px;font-size:18px;border:1.5px solid #b8cff5;border-radius:10px;color:var(--blue)}
+.locked{opacity:.6;pointer-events:none}
+.lockmsg{color:var(--red);font-weight:600;margin-top:10px}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:18px;flex-wrap:wrap}
+.pal{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:16px}
+.pal button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:7px 0;font-weight:600;cursor:pointer;font-size:14px;color:#244}
+.pal button.ans{background:#cdeed2;border-color:var(--green)}
+.pal button.cur{outline:3px solid var(--blue)}
+.pal button.lk{background:#eee;color:#999}
+.res{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+.res div{background:#f1fbf2;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+.res b{display:block;font-size:26px;color:var(--green-d)}
+.res .bad b{color:var(--red)}
+.big{font-size:44px;font-weight:800;color:var(--green-d);text-align:center;margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,40,10,.45);display:flex;align-items:center;justify-content:center;padding:16px;z-index:10}
+.modal .card{max-width:420px;width:100%}
+@media(max-width:560px){#test .nav button{flex:1}#finishBtn{order:3;flex-basis:100%!important}.pal{grid-template-columns:repeat(6,1fr)}.qtext{font-size:17px}.opt{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- KIRISH -->
+<section id="login" class="card">
+  <label class="field"><span>Til / Язык</span><select id="lang"><option value="uz">Oʻzbekcha</option><option value="ru">Русский</option></select></label>
+  <h1>Informatika: MS Word, MS Excel, PowerPoint</h1>
+  <p class="sub" data-t="sub">Akademik litsey oʻquvchilari uchun interaktiv test</p>
+  <label class="field"><span data-t="fam">Familiya</span><input id="fam" autocomplete="off" maxlength="40"></label>
+  <label class="field"><span data-t="ism">Ism</span><input id="ism" autocomplete="off" maxlength="40"></label>
+  <label class="field"><span data-t="guruh">Guruh</span><input id="guruh" autocomplete="off" maxlength="20"></label>
+  <ul class="rules" data-t="rules">
+    <li>30 ta savol: 1–10 oson, 11–23 oʻrtacha, 24–30 murakkab.</li>
+    <li>Har bir savolga 60 soniya. Vaqt tugasa savol yopiladi.</li>
+    <li>Har bir toʻgʻri javob – 1 ball. Koʻp tanlovlida barcha toʻgʻri variantlar belgilanishi shart.</li>
+    <li>Testni faqat 2 marta topshirish mumkin.</li>
+    <li><b>Test oynasidan chiqilsa, boshqa oyna yoki ilova ochilsa – test darhol tugatiladi.</b></li>
+  </ul>
+  <button id="startBtn" class="btn" disabled data-t="start">Testni boshlash</button>
+  <div id="loginMsg" class="msg"></div>
+</section>
+
+<!-- TEST -->
+<section id="test" class="hidden">
+  <div class="top">
+    <div class="who" id="whoLine"></div>
+    <div class="timer" id="timer">60</div>
+  </div>
+  <div class="card">
+    <div class="meta">
+      <span class="badge" id="qnum"></span>
+      <span class="badge" id="qdiff"></span>
+    </div>
+    <div class="qtext" id="qtext"></div>
+    <div class="hint" id="qhint"></div>
+    <div class="media" id="qmedia"></div>
+    <div id="qbody"></div>
+    <div class="lockmsg hidden" id="qlock"></div>
+    <div class="nav">
+      <button class="btn ghost" id="prevBtn" data-t="prev">◀ Oldingi</button>
+      <button class="btn warn" id="finishBtn" data-t="finish">Testni yakunlash</button>
+      <button class="btn" id="nextBtn" data-t="next">Keyingi ▶</button>
+    </div>
+    <div class="pal" id="pal"></div>
+  </div>
+</section>
+
+<!-- NATIJA -->
+<section id="result" class="card hidden">
+  <h1 data-t="resTitle">Test natijasi</h1>
+  <p class="sub" id="resWho"></p>
+  <p class="sub" id="resStatus"></p>
+  <button class="btn hidden" id="retryBtn" data-t="retry">Qayta yuborish</button>
+  <div id="resBox">
+  <div class="big" id="resPct"></div>
+  <div class="res">
+    <div><span data-t="resTotal">Savollar soni</span><b id="resTotal"></b></div>
+    <div><span data-t="resScore">Toʻplangan ball</span><b id="resScore"></b></div>
+    <div><span data-t="resOk">Toʻgʻri javoblar</span><b id="resOk"></b></div>
+    <div class="bad"><span data-t="resBad">Xato / javobsiz</span><b id="resBad"></b></div>
+  </div>
+  <p class="sub" id="resReason"></p>
+  <p class="sub" id="resAttempt"></p>
+  </div>
+  <button class="btn" id="againBtn" data-t="again">Qayta topshirish</button>
+</section>
+</div>
+
+<div class="modal hidden" id="confirmBox">
+  <div class="card">
+    <h1 style="font-size:19px" data-t="cTitle">Testni yakunlaysizmi?</h1>
+    <p class="sub" id="confirmTxt"></p>
+    <div class="nav">
+      <button class="btn ghost" id="cNo" data-t="cNo">Yoʻq, davom etaman</button>
+      <button class="btn warn" id="cYes" data-t="cYes">Ha, yakunlash</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ================= RASMLAR (SVG) ================= */
+function gridSVG(c){
+  const cols=c.cols||["A","B","C","D","E"], rows=c.rows||5, cw=70, rh=30, lw=40;
+  const fxH=c.fx?40:0, W=lw+cols.length*cw+2, H=fxH+rh*(rows+1)+2;
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" font-family="Arial" font-size="14">`;
+  if(c.fx){
+    s+=`<rect x="1" y="4" width="70" height="28" fill="#fff" stroke="#999"/><text x="36" y="23" text-anchor="middle">${c.sel||""}</text>`;
+    s+=`<text x="84" y="23" font-style="italic" fill="#555">fx</text><rect x="104" y="4" width="${W-106}" height="28" fill="#fff" stroke="#999"/><text x="112" y="23">${c.fx}</text>`;
+  }
+  const y0=fxH;
+  s+=`<rect x="1" y="${y0+1}" width="${W-2}" height="${rh}" fill="#eef1ee"/><rect x="1" y="${y0+1}" width="${lw}" height="${H-y0-2}" fill="#eef1ee"/>`;
+  cols.forEach((L,i)=>{s+=`<text x="${lw+i*cw+cw/2}" y="${y0+20}" text-anchor="middle" fill="#333">${L}</text>`});
+  for(let r=1;r<=rows;r++)s+=`<text x="${lw/2}" y="${y0+r*rh+20}" text-anchor="middle" fill="#333">${r}</text>`;
+  for(let i=0;i<=cols.length;i++)s+=`<line x1="${lw+i*cw}" y1="${y0+1}" x2="${lw+i*cw}" y2="${H-1}" stroke="#c9cfc9"/>`;
+  for(let r=0;r<=rows+1;r++)s+=`<line x1="1" y1="${y0+1+r*rh}" x2="${W-1}" y2="${y0+1+r*rh}" stroke="#c9cfc9"/>`;
+  const d=c.data||{};
+  for(const k in d){const ci=cols.indexOf(k[0]),ri=+k.slice(1);const num=!isNaN(parseFloat(d[k]));
+    s+=`<text x="${num?lw+ci*cw+cw-8:lw+ci*cw+6}" y="${y0+ri*rh+20}" text-anchor="${num?"end":"start"}">${d[k]}</text>`}
+  if(c.sel){const ci=cols.indexOf(c.sel[0]),ri=+c.sel.slice(1);
+    s+=`<rect x="${lw+ci*cw}" y="${y0+1+ri*rh}" width="${cw}" height="${rh}" fill="none" stroke="#1e8b3a" stroke-width="3"/><rect x="${lw+ci*cw+cw-5}" y="${y0+1+ri*rh+rh-5}" width="7" height="7" fill="#1e8b3a"/>`}
+  return s+"</svg>";
+}
+const IMG={
+  grid_c3:()=>gridSVG({sel:"C3"}),
+  sum:()=>gridSVG({cols:["A","B","C"],rows:5,data:{A1:"2",A2:"4",A3:"6",A4:"8",A5:"?"},sel:"A5",fx:"=SUM(A1:A4)"}),
+  d2:()=>gridSVG({cols:["A","B","C","D"],rows:3,data:{A1:w("Mahsulot","Товар"),B1:w("Narx","Цена"),C1:w("Soni","Кол-во"),D1:w("Jami","Итого"),A2:w("Daftar","Тетрадь"),B2:"5",C2:"4",D2:"?"},sel:"D2",fx:"=B2*C2"}),
+  countif:()=>gridSVG({cols:["A","B"],rows:6,data:{A1:"5",A2:"12",A3:"18",A4:"7",A5:"10",A6:"25"}}),
+  biu:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 70" width="260" font-family="Georgia,serif" font-size="30">
+    <rect x="10" y="10" width="50" height="50" rx="6" fill="#f4f6f4" stroke="#bbb"/><text x="35" y="46" text-anchor="middle" font-weight="bold">B</text>
+    <rect x="70" y="10" width="50" height="50" rx="6" fill="#f4f6f4" stroke="#bbb"/><text x="95" y="46" text-anchor="middle" font-style="italic">I</text>
+    <rect x="130" y="10" width="50" height="50" rx="6" fill="#dff1e2" stroke="#2e9b47" stroke-width="2"/><text x="155" y="44" text-anchor="middle">U</text><line x1="143" y1="50" x2="167" y2="50" stroke="#000" stroke-width="2"/>
+    <rect x="190" y="10" width="60" height="50" rx="6" fill="#f4f6f4" stroke="#bbb"/><text x="220" y="46" text-anchor="middle" font-size="24" fill="#c62828">A</text><rect x="203" y="50" width="34" height="5" fill="#c62828"/></svg>`,
+  pie:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" width="300" font-family="Arial" font-size="13">
+    <path d="M110 100 L110 20 A80 80 0 0 1 186 125 Z" fill="#2e9b47"/><path d="M110 100 L186 125 A80 80 0 0 1 40 138 Z" fill="#0b4fb3"/><path d="M110 100 L40 138 A80 80 0 0 1 110 20 Z" fill="#f2a900"/>
+    <rect x="215" y="55" width="14" height="14" fill="#2e9b47"/><text x="235" y="67">40%</text><rect x="215" y="85" width="14" height="14" fill="#0b4fb3"/><text x="235" y="97">35%</text><rect x="215" y="115" width="14" height="14" fill="#f2a900"/><text x="235" y="127">25%</text></svg>`,
+  column:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" width="300" font-family="Arial" font-size="12">
+    <line x1="40" y1="170" x2="290" y2="170" stroke="#555"/><line x1="40" y1="20" x2="40" y2="170" stroke="#555"/>
+    <rect x="60" y="90" width="36" height="80" fill="#2e9b47"/><rect x="115" y="50" width="36" height="120" fill="#2e9b47"/><rect x="170" y="110" width="36" height="60" fill="#2e9b47"/><rect x="225" y="35" width="36" height="135" fill="#2e9b47"/>
+    <text x="78" y="186" text-anchor="middle">I</text><text x="133" y="186" text-anchor="middle">II</text><text x="188" y="186" text-anchor="middle">III</text><text x="243" y="186" text-anchor="middle">IV</text></svg>`,
+  line:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" width="300" font-family="Arial" font-size="12">
+    <line x1="40" y1="170" x2="290" y2="170" stroke="#555"/><line x1="40" y1="20" x2="40" y2="170" stroke="#555"/>
+    <polyline points="60,140 110,110 160,125 210,70 260,45" fill="none" stroke="#0b4fb3" stroke-width="3"/>
+    <g fill="#0b4fb3"><circle cx="60" cy="140" r="4"/><circle cx="110" cy="110" r="4"/><circle cx="160" cy="125" r="4"/><circle cx="210" cy="70" r="4"/><circle cx="260" cy="45" r="4"/></g>
+    <text x="60" y="186" text-anchor="middle">${w("Dush","Пн")}</text><text x="110" y="186" text-anchor="middle">${w("Sesh","Вт")}</text><text x="160" y="186" text-anchor="middle">${w("Chor","Ср")}</text><text x="210" y="186" text-anchor="middle">${w("Pay","Чт")}</text><text x="260" y="186" text-anchor="middle">${w("Jum","Пт")}</text></svg>`,
+  merge:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 130" width="320" font-family="Arial" font-size="14">
+    <rect x="10" y="10" width="300" height="110" fill="#fff" stroke="#333" stroke-width="1.5"/>
+    <rect x="10" y="10" width="300" height="36" fill="#dff1e2"/><text x="160" y="33" text-anchor="middle" font-weight="bold">${w("10-A guruh davomati","Посещаемость группы 10-А")}</text>
+    <line x1="10" y1="46" x2="310" y2="46" stroke="#333"/><line x1="10" y1="83" x2="310" y2="83" stroke="#333"/>
+    <line x1="110" y1="46" x2="110" y2="120" stroke="#333"/><line x1="210" y1="46" x2="210" y2="120" stroke="#333"/>
+    <text x="60" y="70" text-anchor="middle">${w("F.I.Sh.","Ф.И.О.")}</text><text x="160" y="70" text-anchor="middle">${w("Kelgan","Присутств.")}</text><text x="260" y="70" text-anchor="middle">${w("Kelmagan","Отсутств.")}</text></svg>`,
+  page:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 280" width="200" font-family="Arial" font-size="11">
+    <rect x="20" y="10" width="180" height="260" fill="#fff" stroke="#888"/>
+    <rect x="22" y="12" width="176" height="34" fill="#fff59d" stroke="#e0b800" stroke-dasharray="4 3"/><text x="110" y="34" text-anchor="middle">${w("Informatika — 10-sinf","Информатика — 10 класс")}</text>
+    <g fill="#bcc5bc"><rect x="40" y="62" width="140" height="7"/><rect x="40" y="78" width="130" height="7"/><rect x="40" y="94" width="140" height="7"/><rect x="40" y="110" width="110" height="7"/><rect x="40" y="134" width="140" height="7"/><rect x="40" y="150" width="125" height="7"/><rect x="40" y="166" width="140" height="7"/><rect x="40" y="182" width="90" height="7"/><rect x="40" y="206" width="140" height="7"/><rect x="40" y="222" width="100" height="7"/></g>
+    <text x="110" y="258" text-anchor="middle">— 1 —</text></svg>`,
+  orient:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" font-family="Arial" font-size="12">
+    <rect x="20" y="20" width="100" height="140" fill="#fff" stroke="#888"/><g fill="#bcc5bc"><rect x="32" y="36" width="76" height="6"/><rect x="32" y="50" width="70" height="6"/><rect x="32" y="64" width="76" height="6"/><rect x="32" y="78" width="60" height="6"/></g>
+    <rect x="150" y="45" width="150" height="105" fill="#fff" stroke="#2e9b47" stroke-width="3"/><g fill="#bcc5bc"><rect x="164" y="60" width="122" height="6"/><rect x="164" y="74" width="110" height="6"/><rect x="164" y="88" width="122" height="6"/><rect x="164" y="102" width="90" height="6"/></g></svg>`,
+  smartart:()=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 170" width="320" font-family="Arial" font-size="12">
+    <g stroke="#555" fill="none"><line x1="160" y1="50" x2="160" y2="70"/><line x1="60" y1="70" x2="260" y2="70"/><line x1="60" y1="70" x2="60" y2="90"/><line x1="160" y1="70" x2="160" y2="90"/><line x1="260" y1="70" x2="260" y2="90"/></g>
+    <rect x="110" y="15" width="100" height="35" rx="6" fill="#2e9b47"/><text x="160" y="37" text-anchor="middle" fill="#fff">${w("Direktor","Директор")}</text>
+    <rect x="15" y="90" width="90" height="35" rx="6" fill="#0b4fb3"/><text x="60" y="112" text-anchor="middle" fill="#fff">${w("Oʻquv ishlari","Учебная часть")}</text>
+    <rect x="115" y="90" width="90" height="35" rx="6" fill="#0b4fb3"/><text x="160" y="112" text-anchor="middle" fill="#fff">${w("Maʼnaviyat","Духовность")}</text>
+    <rect x="215" y="90" width="90" height="35" rx="6" fill="#0b4fb3"/><text x="260" y="112" text-anchor="middle" fill="#fff">${w("Xoʻjalik","Хозяйство")}</text></svg>`
+};
+
+/* ================= YORDAMCHI ================= */
+const $=id=>document.getElementById(id);
+const TOTAL=30, PER_Q=60, MAX_ATT=2;
+
+/* ================= TIL (uz / ru) ================= */
+const T={
+uz:{title:"Informatika testi",sub:"Akademik litsey oʻquvchilari uchun interaktiv test",fam:"Familiya",ism:"Ism",guruh:"Guruh",
+  rules:`<li>30 ta savol: 1–10 oson, 11–23 oʻrtacha, 24–30 murakkab.</li><li>Har bir savolga 60 soniya. Vaqt tugasa savol yopiladi.</li><li>Har bir toʻgʻri javob – 1 ball. Koʻp tanlovlida barcha toʻgʻri variantlar belgilanishi shart.</li><li>Testni faqat 2 marta topshirish mumkin.</li><li><b>Test oynasidan chiqilsa, boshqa oyna yoki ilova ochilsa – test darhol tugatiladi.</b></li>`,
+  start:"Testni boshlash",prev:"◀ Oldingi",finish:"Testni yakunlash",next:"Keyingi ▶",resTitle:"Test natijasi",retry:"Qayta yuborish",
+  resTotal:"Savollar soni",resScore:"Toʻplangan ball",resOk:"Toʻgʻri javoblar",resBad:"Xato / javobsiz",again:"Qayta topshirish",
+  cTitle:"Testni yakunlaysizmi?",cNo:"Yoʻq, davom etaman",cYes:"Ha, yakunlash",
+  easy:"Oson",medium:"Oʻrtacha",hard:"Murakkab",
+  fill:"Barcha qatorlarni toʻldiring.",noUrl:"Test hali sozlanmagan (SCRIPT_URL yoʻq). Oʻqituvchiga murojaat qiling.",
+  denied:"Siz testni 2 marta topshirib boʻlgansiz. Qayta topshirish mumkin emas.",loading:"Savollar yuklanmoqda...",
+  noConn:"Server bilan aloqa yoʻq. Internetni tekshirib, qayta bosing.",err:"Xatolik. Qayta urinib koʻring.",
+  attempt:n=>`${n}-urinish`,qnum:(i,n)=>`Savol ${i} / ${n}`,
+  hintS:"Bitta toʻgʻri javobni tanlang.",hintM:"Bir nechta toʻgʻri javob bor – barchasini belgilang.",hintO:"Javobni klaviaturada yozing.",
+  listen:"🔊 Tinglash",ph:"Javobingiz...",locked:"Bu savol uchun vaqt tugagan.",noTts:"Bu qurilmada ovozli oʻqish qoʻllab-quvvatlanmaydi.",
+  answered:(n,t)=>`Javob berilgan savollar: ${n} / ${t}.`,calc:"Natija hisoblanmoqda...",errSrv:"Xatolik: ",
+  offline:"Internet aloqasi yoʻq. Natija saqlab qoʻyildi — aloqa tiklangach «Qayta yuborish» tugmasini bosing.",
+  ball:" ball",unans:n=>` (javobsiz: ${n})`,reason:"Yakunlanish sababi: ",
+  left:(a,l)=>`Bu ${a}-urinish edi. Yana ${l} ta imkoniyat qoldi.`,noLeft:"Barcha urinishlardan foydalanildi."},
+ru:{title:"Тест по информатике",sub:"Интерактивный тест для учащихся академического лицея",fam:"Фамилия",ism:"Имя",guruh:"Группа",
+  rules:`<li>30 вопросов: 1–10 лёгкие, 11–23 средние, 24–30 сложные.</li><li>На каждый вопрос 60 секунд. Когда время истекает, вопрос закрывается.</li><li>Каждый правильный ответ – 1 балл. В вопросах с несколькими ответами нужно отметить все правильные варианты.</li><li>Тест можно пройти только 2 раза.</li><li><b>Если выйти из окна теста, открыть другое окно или приложение – тест сразу завершится.</b></li>`,
+  start:"Начать тест",prev:"◀ Назад",finish:"Завершить тест",next:"Далее ▶",resTitle:"Результат теста",retry:"Отправить повторно",
+  resTotal:"Количество вопросов",resScore:"Набрано баллов",resOk:"Правильные ответы",resBad:"Ошибки / без ответа",again:"Пройти ещё раз",
+  cTitle:"Завершить тест?",cNo:"Нет, продолжу",cYes:"Да, завершить",
+  easy:"Лёгкий",medium:"Средний",hard:"Сложный",
+  fill:"Заполните все поля.",noUrl:"Тест ещё не настроен (нет SCRIPT_URL). Обратитесь к учителю.",
+  denied:"Вы уже прошли тест 2 раза. Повторное прохождение невозможно.",loading:"Загрузка вопросов...",
+  noConn:"Нет связи с сервером. Проверьте интернет и нажмите ещё раз.",err:"Ошибка. Попробуйте ещё раз.",
+  attempt:n=>`попытка ${n}`,qnum:(i,n)=>`Вопрос ${i} / ${n}`,
+  hintS:"Выберите один правильный ответ.",hintM:"Правильных ответов несколько – отметьте все.",hintO:"Введите ответ с клавиатуры.",
+  listen:"🔊 Прослушать",ph:"Ваш ответ...",locked:"Время на этот вопрос истекло.",noTts:"На этом устройстве озвучивание не поддерживается.",
+  answered:(n,t)=>`Отвечено вопросов: ${n} / ${t}.`,calc:"Подсчёт результата...",errSrv:"Ошибка: ",
+  offline:"Нет подключения к интернету. Результат сохранён — когда связь восстановится, нажмите «Отправить повторно».",
+  ball:n=>" "+(n%10===1&&n%100!==11?"балл":n%10>=2&&n%10<=4&&(n%100<10||n%100>=20)?"балла":"баллов"),unans:n=>` (без ответа: ${n})`,reason:"Причина завершения: ",
+  left:(a,l)=>`Это была ${a}-я попытка. Осталось ещё: ${l}.`,noLeft:"Все попытки использованы."}};
+/* serverdan keladigan va jadvalga yoziladigan (oʻzbekcha) matnlar tarjimasi */
+const SRV_RU={"Oʻquvchi oʻzi yakunladi":"Учащийся завершил сам","Barcha savollar vaqti tugadi":"Время на все вопросы истекло",
+  "Boshqa oyna/ilovaga oʻtildi":"Переход в другое окно/приложение","Test oynasidan chiqildi":"Выход из окна теста",
+  "Toʻliq ekran rejimidan chiqildi":"Выход из полноэкранного режима","Sahifa yopildi yoki yangilandi":"Страница закрыта или обновлена",
+  "(vaqtdan kech yuborildi)":"(отправлено с опозданием)","Maʼlumotlar toʻliq emas":"Данные заполнены не полностью",
+  "token yaroqsiz":"недействительный токен","notoʻgʻri soʻrov":"неверный запрос"};
+let L="uz";try{if(localStorage.getItem("lang")==="ru")L="ru"}catch(e){}
+function t(k,...a){const v=T[L][k];return typeof v==="function"?v(...a):v}
+const w=(uz,ru)=>L==="ru"?ru:uz;   // rasmlardagi yozuvlar uchun
+function srv(s){s=String(s||"");if(L==="ru")for(const k in SRV_RU)s=s.split(k).join(SRV_RU[k]);return s}
+function applyLang(){
+  document.documentElement.lang=L;document.title=t("title");
+  document.querySelectorAll("[data-t]").forEach(el=>el.innerHTML=t(el.dataset.t));
+}
+function rnd(n){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n}
+function keyOf(f,i,g){return [f,i,g].map(x=>x.trim().toLowerCase().replace(/\s+/g," ").replace(/[ʻʼ‘’`´']/g,"'")).join("|")}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function deviceId(){let d=localStorage.getItem("dev_id");if(!d){d=Date.now().toString(36)+rnd(1e9).toString(36);localStorage.setItem("dev_id",d)}return d}
+function answered(v){return v!=null&&v!==""&&!(Array.isArray(v)&&!v.length)}
+
+/* Savollar va toʻgʻri javoblar shu sahifada YOʻQ — ular Google Apps Script'da saqlanadi va baholash oʻsha yerda bajariladi.
+   SCRIPT_URL GitHub Actions build vaqtida avtomatik qoʻyiladi. */
+const SCRIPT_URL="__SCRIPT_URL__";
+const ONLINE=/^https:\/\//.test(SCRIPT_URL);
+async function call(params,body){
+  const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),30000);
+  try{
+    const url=SCRIPT_URL+(params?"?"+new URLSearchParams(params):"");
+    const opt=body?{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body),signal:ctl.signal}:{signal:ctl.signal};
+    const r=await fetch(url,opt);if(!r.ok)throw new Error("http "+r.status);return await r.json();
+  }finally{clearTimeout(t)}
+}
+function beacon(P){try{return navigator.sendBeacon(SCRIPT_URL,new Blob([JSON.stringify(P)],{type:"text/plain"}))}catch(e){return false}}
+
+/* ================= HOLAT ================= */
+let S=null, tick=null, armed=false;
+
+/* ================= KIRISH ================= */
+$("lang").value=L;applyLang();
+$("lang").onchange=()=>{L=$("lang").value==="ru"?"ru":"uz";try{localStorage.setItem("lang",L)}catch(e){}applyLang();$("loginMsg").textContent=""};
+const inputs=["fam","ism","guruh"].map($);
+inputs.forEach(i=>i.addEventListener("input",()=>{$("startBtn").disabled=!inputs.every(x=>x.value.trim().length>=2);$("loginMsg").textContent=""}));
+function loginMsg(m,ok){$("loginMsg").textContent=m;$("loginMsg").style.color=ok?"#1d7432":""}
+
+$("startBtn").onclick=async()=>{
+  const st={fam:$("fam").value.trim(),ism:$("ism").value.trim(),guruh:$("guruh").value.trim()};
+  if(!st.fam||!st.ism||!st.guruh){loginMsg(t("fill"));return}
+  if(!ONLINE){loginMsg(t("noUrl"));return}
+  const lk="att|"+keyOf(st.fam,st.ism,st.guruh), local=+localStorage.getItem(lk)||0;
+  const deny=()=>{loginMsg(t("denied"));$("startBtn").disabled=false};
+  if(local>=MAX_ATT){deny();return}
+  $("startBtn").disabled=true;loginMsg(t("loading"),true);
+  let r;
+  try{r=await call({action:"start",...st,lang:L,deviceId:deviceId()})}
+  catch(e){loginMsg(t("noConn"));$("startBtn").disabled=false;return}
+  if(!r.ok){if(r.used>=MAX_ATT)deny();else{loginMsg(r.error?srv(r.error):t("err"));$("startBtn").disabled=false}return}
+  localStorage.setItem(lk,Math.max(local+1,r.attempt));
+  loginMsg("");startTest(st,r);
+};
+
+function startTest(st,r){
+  S={...st,attempt:r.attempt,token:r.token,qs:r.questions,idx:0,ans:Array(TOTAL).fill(null),left:Array(TOTAL).fill(PER_Q),
+     lock:Array(TOTAL).fill(false),t0:Date.now(),active:true};
+  $("login").classList.add("hidden");$("result").classList.add("hidden");$("test").classList.remove("hidden");
+  $("whoLine").innerHTML=`<b>${esc(S.fam)} ${esc(S.ism)}</b> · ${esc(S.guruh)} · ${t("attempt",S.attempt)}`;
+  const el=document.documentElement;
+  try{(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el)?.catch?.(()=>{})}catch(e){}
+  armed=false;setTimeout(()=>{armed=true},1500);
+  render();
+  tick=setInterval(onTick,1000);
+}
+
+/* ================= TEST ================= */
+function render(){
+  const q=S.qs[S.idx],i=S.idx,v=S.ans[i],lk=S.lock[i];
+  $("qnum").textContent=t("qnum",i+1,TOTAL);
+  $("qdiff").textContent=t(q.lvl);$("qdiff").className="badge"+(q.lvl==="medium"?" m":q.lvl==="hard"?" h":"");
+  $("qtext").textContent=q.q;
+  $("qhint").textContent=t(q.t==="s"?"hintS":q.t==="m"?"hintM":"hintO");
+  let media="";
+  if(q.img&&IMG[q.img])media+=IMG[q.img]();
+  if(q.audio)media+=`<div style="margin-top:8px"><button class="audio" id="playBtn">${t("listen")}</button></div>`;
+  $("qmedia").innerHTML=media;
+  if(q.audio)$("playBtn").onclick=()=>speak(q.audio);
+  let b="";
+  if(q.t==="o"){b=`<div class="open"><input id="openIn" autocomplete="off" placeholder="${t("ph")}" value="${esc(v||"")}"></div>`}
+  else{b=`<div class="opts">`+q.o.map((o,k)=>{
+      const sel=q.t==="s"?v===k:Array.isArray(v)&&v.includes(k);
+      return `<label class="opt${sel?" sel":""}"><input type="${q.t==="s"?"radio":"checkbox"}" name="opt" value="${k}"${sel?" checked":""}><span>${String.fromCharCode(65+k)}) ${esc(o)}</span></label>`}).join("")+`</div>`}
+  $("qbody").innerHTML=b;$("qbody").className=lk?"locked":"";
+  $("qlock").textContent=t("locked");$("qlock").classList.toggle("hidden",!lk);
+  if(!lk){
+    if(q.t==="o"){const inp=$("openIn");inp.oninput=()=>{S.ans[i]=inp.value.slice(0,100);pal()}}
+    else $("qbody").querySelectorAll("input").forEach(inp=>inp.onchange=()=>{
+      if(q.t==="s")S.ans[i]=+inp.value;
+      else S.ans[i]=[...$("qbody").querySelectorAll("input:checked")].map(x=>+x.value);
+      $("qbody").querySelectorAll(".opt").forEach(l=>l.classList.toggle("sel",l.querySelector("input").checked));pal()});
+  }
+  $("prevBtn").disabled=i===0;$("nextBtn").disabled=i===TOTAL-1;
+  showTimer();pal();
+}
+function pal(){
+  $("pal").innerHTML=S.qs.map((_,k)=>`<button data-k="${k}" class="${answered(S.ans[k])?"ans":""}${S.lock[k]?" lk":""}${k===S.idx?" cur":""}">${k+1}</button>`).join("");
+  $("pal").querySelectorAll("button").forEach(b=>b.onclick=()=>go(+b.dataset.k));
+}
+function go(k){if(k<0||k>=TOTAL)return;stopSpeak();S.idx=k;render()}
+function showTimer(){const s=S.lock[S.idx]?0:S.left[S.idx];$("timer").textContent=s+(L==="ru"?" с":" s");$("timer").classList.toggle("low",s<=10)}
+function onTick(){
+  if(!S||!S.active)return;const i=S.idx;
+  if(S.lock[i]){showTimer();return}
+  S.left[i]--;
+  if(S.left[i]<=0){S.left[i]=0;S.lock[i]=true;
+    for(let s=1;s<=TOTAL;s++){const k=(i+s)%TOTAL;if(!S.lock[k]){go(k);return}}
+    finish("Barcha savollar vaqti tugadi");return}
+  showTimer();
+}
+$("prevBtn").onclick=()=>go(S.idx-1);
+$("nextBtn").onclick=()=>go(S.idx+1);
+$("finishBtn").onclick=()=>{
+  const n=S.ans.filter(answered).length;
+  $("confirmTxt").textContent=t("answered",n,TOTAL);
+  $("confirmBox").classList.remove("hidden");
+};
+$("cNo").onclick=()=>$("confirmBox").classList.add("hidden");
+$("cYes").onclick=()=>{$("confirmBox").classList.add("hidden");finish("Oʻquvchi oʻzi yakunladi")};
+
+/* ================= AUDIO ================= */
+function speak(txt){
+  if(!("speechSynthesis" in window)){$("qlock").textContent=t("noTts");$("qlock").classList.remove("hidden");return}
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang="en-US";u.rate=.8;
+  const v=speechSynthesis.getVoices().find(x=>/^en/i.test(x.lang));if(v)u.voice=v;speechSynthesis.speak(u);
+}
+function stopSpeak(){try{speechSynthesis.cancel()}catch(e){}}
+
+/* ================= YAKUNLASH (baholash serverda) ================= */
+function finish(reason,unloading){
+  if(!S||!S.active)return;S.active=false;clearInterval(tick);stopSpeak();
+  const P={token:S.token,answers:S.ans,reason,fam:S.fam,ism:S.ism,guruh:S.guruh};
+  localStorage.setItem("pending",JSON.stringify(P));
+  beacon(P);                     // sahifa yopilsa ham yetib boradi
+  if(unloading)return;
+  try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}
+  submit(P);
+}
+function showWait(P,text,retry){
+  $("test").classList.add("hidden");$("login").classList.add("hidden");$("result").classList.remove("hidden");
+  $("resWho").textContent=`${P.fam} ${P.ism} · ${P.guruh}`;
+  $("resBox").classList.add("hidden");$("againBtn").classList.add("hidden");
+  $("resStatus").textContent=text;$("retryBtn").classList.toggle("hidden",!retry);
+}
+async function submit(P){
+  showWait(P,t("calc"),false);
+  for(let n=0;n<3;n++){
+    try{const r=await call(null,P);
+      if(r.ok){localStorage.removeItem("pending");showResult(r);return}
+      showWait(P,t("errSrv")+srv(r.error||"server"),false);localStorage.removeItem("pending");return;
+    }catch(e){await new Promise(z=>setTimeout(z,2000))}
+  }
+  showWait(P,t("offline"),true);
+}
+$("retryBtn").onclick=()=>{const P=JSON.parse(localStorage.getItem("pending")||"null");if(P)submit(P)};
+function showResult(R){
+  $("test").classList.add("hidden");$("login").classList.add("hidden");$("result").classList.remove("hidden");
+  $("resBox").classList.remove("hidden");$("resStatus").textContent="";$("retryBtn").classList.add("hidden");
+  $("resWho").textContent=`${R.fam} ${R.ism} · ${R.guruh}`;
+  $("resPct").textContent=R.percent+"%";
+  $("resTotal").textContent=R.total;$("resScore").textContent=R.correct+t("ball",R.correct);
+  $("resOk").textContent=R.correct;$("resBad").textContent=R.wrong+(R.unanswered?t("unans",R.unanswered):"");
+  $("resReason").textContent=t("reason")+srv(R.reason);
+  const left=MAX_ATT-R.attempt;
+  $("resAttempt").textContent=left>0?t("left",R.attempt,left):t("noLeft");
+  $("againBtn").classList.toggle("hidden",left<=0);
+}
+$("againBtn").onclick=()=>{$("result").classList.add("hidden");$("login").classList.remove("hidden");
+  inputs.forEach(i=>i.dispatchEvent(new Event("input")))};
+
+/* ================= HIMOYA: faqat test oynasi ================= */
+function guard(reason,unloading){if(S&&S.active&&armed)finish(reason,unloading)}
+document.addEventListener("visibilitychange",()=>{if(document.hidden)guard("Boshqa oyna/ilovaga oʻtildi")});
+window.addEventListener("blur",()=>guard("Test oynasidan chiqildi"));
+document.addEventListener("fullscreenchange",()=>{if(!document.fullscreenElement)guard("Toʻliq ekran rejimidan chiqildi")});
+window.addEventListener("pagehide",()=>guard("Sahifa yopildi yoki yangilandi",true));
+window.addEventListener("beforeunload",()=>{if(S&&S.active)finish("Sahifa yopildi yoki yangilandi",true)});
+document.addEventListener("contextmenu",e=>e.preventDefault());
+["copy","cut","paste"].forEach(ev=>document.addEventListener(ev,e=>{if(S&&S.active)e.preventDefault()}));
+document.addEventListener("keydown",e=>{
+  if(!S||!S.active)return;
+  if(e.key==="F12"||(e.ctrlKey&&["u","s","p"].includes(e.key.toLowerCase()))||(e.ctrlKey&&e.shiftKey&&["i","j","c"].includes(e.key.toLowerCase())))e.preventDefault();
+});
+/* oldingi yuborilmay qolgan natija boʻlsa – yuborib, natijani koʻrsatamiz */
+(()=>{const P=JSON.parse(localStorage.getItem("pending")||"null");if(P&&ONLINE)submit(P)})();
+</script>
+</body>
+</html>
