@@ -128,7 +128,7 @@ function grade_(b, ord, a) {
     const need = b.a.slice().sort();
     return got.length === need.length && got.every((x, j) => x === need[j]);
   }
-  return b.a.map(norm_).includes(norm_(a));
+  return b.a.concat((b.ru && b.ru.a) || []).map(norm_).includes(norm_(a));
 }
 function fromRow_(r) {
   return { ok: true, fam: r[1], ism: r[2], guruh: r[3], attempt: r[4], total: r[5], correct: r[6], wrong: r[7],
