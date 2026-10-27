@@ -27,13 +27,15 @@ jobs:
         env:
           SCRIPT_URL: ${{ vars.SCRIPT_URL }}
         run: |
-          if [[ ! "$SCRIPT_URL" =~ ^https://script\.google\.com/ ]]; then
-            echo "::error::Settings → Secrets and variables → Actions → Variables boʻlimida SCRIPT_URL kiritilmagan"
+          SCRIPT_URL="$(printf '%s' "$SCRIPT_URL" | tr -d '[:space:]')"   # nusxalashda qoʻshilgan boʻsh joy/yangi qatorlarni olib tashlash
+          if [[ ! "$SCRIPT_URL" =~ ^https://script\.google\.com/macros/s/[A-Za-z0-9_-]+/exec$ ]]; then
+            echo "::error::SCRIPT_URL notoʻgʻri yoki kiritilmagan (Settings → Secrets and variables → Actions → Variables). Kutilgan koʻrinish: https://script.google.com/macros/s/.../exec"
             exit 1
           fi
           mkdir -p dist
-          sed "s|__SCRIPT_URL__|${SCRIPT_URL}|g" index.html > dist/index.html
-          grep -q "__SCRIPT_URL__" dist/index.html && { echo "::error::Almashtirish bajarilmadi"; exit 1; } || true
+          html="$(cat index.html)"
+          printf '%s\n' "${html//__SCRIPT_URL__/$SCRIPT_URL}" > dist/index.html
+          if grep -q "__SCRIPT_URL__" dist/index.html; then echo "::error::Almashtirish bajarilmadi"; exit 1; fi
           touch dist/.nojekyll
 
       - uses: actions/configure-pages@v5
